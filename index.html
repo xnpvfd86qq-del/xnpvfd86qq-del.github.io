@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cómo una mayoría propietaria marca el futuro de los jóvenes inquilinos</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700;900&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #111;
+      --panel: #151515;
+      --panel-dark: #121212;
+      --text: #f5f5f5;
+      --muted: #b3b3b3;
+      --accent: #6fd3ff;
+      --border: #2a2a2a;
+      --blue: #0b82ff;
+      --yellow: #f6c344;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: #8dc9ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: #171717;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .header-inner {
+      width: 100%;
+      padding: 12px 30px 10px;
+    }
+    .top-bar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 56px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #c7c7c7;
+      background: transparent;
+      font-size: 18px;
+      position: absolute;
+      left: 6px;
+    }
+    .logo {
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 700;
+      font-size: 22px;
+      text-align: center;
+      line-height: 1.1;
+      letter-spacing: -0.4px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 8px;
+      width: 260px;
+    }
+    .logo small {
+      display: block;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 400;
+      margin-top: 4px;
+    }
+    .header-actions {
+      position: absolute;
+      right: 6px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      color: #f1f1f1;
+      font-size: 14px;
+    }
+    .avatar-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      color: #d9d9d9;
+      background: #1f1f1f;
+      font-size: 16px;
+    }
+    .top-bar .icon-btn { justify-self: start; }
+    .nav-row {
+      max-width: 1080px;
+      margin: -48px auto 48px;
+      padding: 0 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .subnav {
+      display: inline-flex;
+      gap: 26px;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .subnav a {
+      color: #dcdcdc;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .subnav a:first-child {
+      color: #fff;
+      font-weight: 700;
+    }
+    .nav-actions {
+      display: none;
+    }
+    .nav-user {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      color: #f1f1f1;
+      font-size: 14px;
+    }
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 140px 28px 80px;
+    }
+    article {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .kicker {
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 900;
+      font-size: 54px;
+      line-height: 1.1;
+      margin: 0 0 18px;
+      color: #fdfdfd;
+    }
+    .dek {
+      font-size: 19px;
+      color: #e2e2e2;
+      margin: 0 0 18px;
+    }
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      color: #d0d0d0;
+      margin-bottom: 18px;
+    }
+    .date {
+      color: var(--muted);
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      font-size: 15px;
+      margin: 0 0 12px;
+    }
+    .meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .meta-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+    .inline-icon {
+      width: 14px;
+      height: 14px;
+      display: inline-block;
+    }
+    .google-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #1c1c1c;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 8px 10px;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      font-size: 13px;
+      color: #dcdcdc;
+      margin-bottom: 28px;
+    }
+    .google-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #34a853;
+    }
+    .hero {
+      margin: 8px 0 8px;
+      background: var(--panel);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .hero img {
+      width: 100%;
+      display: block;
+    }
+    .caption {
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      font-size: 12px;
+      color: #cfcfcf;
+      padding: 4px 4px 0;
+    }
+    .author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0 10px;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      color: #dcdcdc;
+    }
+    .author img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      object-fit: cover;
+    }
+    .author span {
+      font-weight: 700;
+    }
+    p {
+      font-size: 19px;
+      margin: 0 0 22px;
+      color: #e8e8e8;
+    }
+    .content {
+      margin-top: 12px;
+    }
+    .article-tail {
+      margin: 50px auto 0;
+      padding: 0 4px 30px;
+      max-width: 960px;
+      color: #f0f0f0;
+    }
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 10px 0 18px;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 16px;
+      border: 1px solid #2a2a2a;
+      background: #171717;
+      color: #e6e6e6;
+      font-size: 12px;
+      text-decoration: none;
+    }
+    .pill-btn:hover { border-color: #3a3a3a; background: #1d1d1d; }
+    .edition-card {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      column-gap: 12px;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid #2a2a2a;
+      background: #131313;
+      border-radius: 10px;
+      margin: 14px 0 16px;
+      align-items: start;
+    }
+    .edition-thumb {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: #1d1d1d;
+      border: 1px solid #2f2f2f;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      color: #cfcfcf;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .edition-meta {
+      padding-top: 10px;
+    }
+    .edition-meta h4 {
+      margin: 0 0 6px;
+      font-size: 15px;
+      color: #f4f4f4;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .edition-meta p {
+      margin: 0 0 8px;
+      font-size: 13px;
+      color: #c7c7c7;
+      line-height: 1.45;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .share-row {
+      display: flex;
+      gap: 8px;
+      margin: 8px 0 18px;
+      flex-wrap: wrap;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .share-btn {
+      padding: 7px 11px;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      background: #171717;
+      font-size: 12px;
+      color: #ececec;
+      cursor: pointer;
+    }
+    .share-btn:hover { background: #1f1f1f; }
+    .newsletter-box {
+      padding: 14px;
+      border: 1px solid #2a2a2a;
+      background: #151515;
+      border-radius: 10px;
+      margin: 18px 0 24px;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .newsletter-box h4 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      color: #f2f2f2;
+    }
+    .newsletter-box p {
+      margin: 0 0 10px;
+      font-size: 13px;
+      color: #c7c7c7;
+    }
+    .newsletter-box button {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #0b82ff;
+      background: #0b82ff;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .newsletter-box button:hover { background: #0d8eff; }
+    .more-grid {
+      margin: 18px 0 20px;
+      border-top: 1px solid #2a2a2a;
+      padding-top: 12px;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .more-title {
+      font-weight: 800;
+      font-size: 14px;
+      color: #f3f3f3;
+      margin: 0 0 10px;
+    }
+    .more-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .more-card {
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 10px;
+      background: #141414;
+      color: #e8e8e8;
+    }
+    .more-card h5 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      color: #f0f0f0;
+    }
+    .more-card p {
+      margin: 0;
+      font-size: 12px;
+      color: #c5c5c5;
+      line-height: 1.4;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .chart-block {
+      margin: 18px 0 22px;
+      padding: 16px 14px 18px 14px;
+      padding-right: 54px;
+      border-radius: 12px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+      position: relative;
+    }
+    .chart-header {
+      margin-bottom: 10px;
+    }
+    .chart-title {
+      margin: 0 0 6px;
+      font-size: 18px;
+      font-weight: 800;
+      color: #f2f2f2;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .chart-subtitle {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 13px;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .chart-rows {
+      display: grid;
+      grid-template-columns: minmax(110px, 0.8fr) repeat(2, minmax(150px, 1fr));
+      gap: 8px 10px;
+      align-items: center;
+      width: 100%;
+      min-width: 0;
+    }
+    .chart-row { display: contents; }
+    .chart-headings .chart-label,
+    .chart-headings .chart-bar-cell {
+      font-size: 13px;
+      font-weight: 800;
+      color: #e6e6e6;
+    }
+    .chart-headings .chart-bar-cell:nth-child(2) { color: var(--yellow); }
+    .chart-headings .chart-bar-cell:nth-child(3) { color: var(--blue); }
+    .chart-label {
+      height: 24px;
+      display: flex;
+      align-items: center;
+      font-size: clamp(11px, 2.2vw, 14px);
+      color: #e8e8e8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      width: 100%;
+    }
+    .chart-bar-cell {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+    }
+    .bar {
+      position: relative;
+      height: 24px;
+      border-radius: 6px;
+      background: #161616;
+      overflow: hidden;
+      border: 1px solid #2f2f2f;
+      width: 100%;
+    }
+    @media (max-width: 720px) {
+      .chart-rows {
+        grid-template-columns: minmax(100px, 0.8fr) repeat(2, minmax(110px, 1fr));
+        gap: 8px;
+      }
+      .chart-label { font-size: clamp(10px, 2.4vw, 13px); }
+      .bar { height: 22px; }
+      .bar-fill { font-size: 11px; padding-right: 6px; }
+      .chart-block { padding: 14px 46px 16px 12px; }
+    }
+    .bar-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 8px;
+      color: #0b1118;
+      font-weight: 800;
+      font-size: 12px;
+      border-radius: 6px;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      min-width: 52px;
+    }
+    .bar-fill.rent { background: var(--yellow); }
+    .bar-fill.salary { background: var(--blue); color: #f9fbff; }
+    .chart-source {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: right;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .paycheck-block {
+      margin: 12px 0 14px;
+      padding: 10px;
+      border-radius: 8px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    .paycheck-header h3 {
+      margin: 0 0 4px;
+      font-size: 16px;
+      font-weight: 800;
+      color: #f2f2f2;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .paycheck-header p {
+      margin: 0 0 6px;
+      font-size: 11px;
+      color: var(--muted);
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .paycheck-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .paycheck-card {
+      padding: 6px;
+      border-radius: 7px;
+      background: #181818;
+      border: 1px solid #262626;
+      color: #eaeaea;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    .paycheck-card strong {
+      font-size: 14px;
+      display: block;
+      margin-bottom: 2px;
+      color: #f6f6f6;
+    }
+    .paycheck-card small {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+    .paycheck-chart-title {
+      margin: 0 0 4px;
+      font-weight: 800;
+      font-size: 13px;
+      color: #f2f2f2;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .paycheck-bar-row {
+      display: grid;
+      grid-template-columns: 110px 1fr 46px;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+      font-size: 12px;
+      color: #e8e8e8;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .paycheck-bar {
+      position: relative;
+      height: 14px;
+      border-radius: 7px;
+      background: #141414;
+      overflow: hidden;
+      border: 1px solid #2a2a2a;
+    }
+    .paycheck-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      border-radius: 7px;
+      background: var(--blue);
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      color: #fff;
+      font-weight: 700;
+      font-size: 11px;
+    }
+    .paycheck-fill.highlight { background: #e53935; }
+    .paycheck-value {
+      text-align: right;
+      font-weight: 700;
+      color: #f2f2f2;
+    }
+    .line-chart-block {
+      margin: 18px 0 22px;
+      padding: 14px;
+      border-radius: 10px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    .line-chart-title {
+      margin: 0 0 4px;
+      font-size: 18px;
+      font-weight: 800;
+      color: #f2f2f2;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .line-chart-subtitle {
+      margin: 0 0 8px;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .line-chart-legend {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: #e8e8e8;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      flex-wrap: wrap;
+    }
+    .line-legend-chip {
+      width: 12px;
+      height: 12px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    #wage-rent-chart {
+      width: 100%;
+    }
+    .chart-next {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid #2a2a2a;
+      background: #1a1a1a;
+      color: #e6e6e6;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+    }
+    .chart-next:hover { background: #222; }
+    .chart-page-indicator {
+      position: absolute;
+      right: 12px;
+      bottom: 8px;
+      font-size: 11px;
+      color: var(--muted);
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    .save-share {
+      display: flex;
+      gap: 10px;
+      margin: 10px 0 24px;
+    }
+    .save-share button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #2a2a2a;
+      background: #1a1a1a;
+      font-size: 12px;
+      color: #e0e0e0;
+      cursor: pointer;
+    }
+    .save-share button:hover { background: #202020; }
+    .site-footer {
+      background: #161616;
+      color: #d8d8d8;
+      padding: 30px 0 40px;
+      margin-top: 32px;
+      width: 100%;
+      border-top: 1px solid #2a2a2a;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+    }
+    .footer-col h4 {
+      margin: 0 0 8px;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 13px;
+      color: #f1f1f1;
+      font-weight: 800;
+    }
+    .footer-col a {
+      display: block;
+      color: #c7c7c7;
+      text-decoration: none;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    .footer-col a:hover { text-decoration: underline; }
+    .footer-meta {
+      max-width: 1100px;
+      margin: 12px auto 0;
+      padding: 0 32px;
+      text-align: center;
+      color: #b5b5b5;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #0e0e0e; }
+    ::-webkit-scrollbar-thumb { background: #2b2b2b; border-radius: 6px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3a3a3a; }
+    @media (max-width: 920px) {
+      .top-bar {
+        display: grid;
+        grid-template-columns: 42px 1fr auto;
+        align-items: center;
+        justify-content: initial;
+        column-gap: 10px;
+      }
+      .icon-btn {
+        position: static;
+        left: auto;
+        justify-self: start;
+      }
+      .logo {
+        position: static;
+        transform: none;
+        margin-left: 0;
+        text-align: center;
+        width: 100%;
+      }
+      .header-actions {
+        position: static;
+        justify-self: end;
+      }
+      .nav-row {
+        justify-content: flex-start;
+        padding-left: 22px;
+        margin-top: -45px;
+      }
+      .nav-actions {
+        position: static;
+        margin-left: auto;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      h1 { font-size: 36px; }
+      main { padding: 130px 18px 80px; }
+      .header-inner { padding: 10px 16px 8px; }
+      .subnav { flex-wrap: wrap; gap: 14px; }
+    }
+  </style>
+</head>
+  <body>
+  <header>
+    <div class="header-inner">
+      <div class="top-bar">
+        <button class="icon-btn" aria-label="menu">≡</button>
+        <div class="logo">
+          Cibercultura
+          <small>veritas lux mea</small>
+        </div>
+        <div class="header-actions">
+          <div class="avatar-circle">👤</div>
+        </div>
+      </div>
+  </header>
+
+  <main>
+    <div class="nav-row">
+      <nav class="subnav">
+        <a href="#">España</a>
+        <a href="#">Análisis</a>
+        <a href="#">Opinión</a>
+        <a href="#">Reportaje</a>
+        <a href="#">Noticia</a>
+        <a href="#">Entrevista</a>
+        <a href="#">Internacional</a>
+      </nav>
+    </div>
+    <article>
+      <div class="kicker">Sociedad</div>
+      <h1>Cómo una mayoría propietaria marca el futuro de los jóvenes inquilinos</h1>
+      <p class="dek">
+        En una democracia envejecida donde la mayoría ya es propietaria, la vivienda se convierte en máquina de rentas
+      </p>
+      <p class="date">11 de octubre, 2025</p>
+      <div class="save-share">
+        <button aria-label="Guardar">Guardar</button>
+        <button aria-label="Compartir">Compartir</button>
+      </div>
+      <div class="hero">
+        <img src="illustration.png" alt="Illustration of robotic hands exchanging money and a key with a young person at a table" />
+      </div>
+      <div class="caption">
+        Un joven sentado a una mesa mientras manos robóticas intercambian dinero y una llave en una ciudad distópica. / Ilustración creada por IA
+      </div>
+
+      <div class="author">
+        <div><span>Panel de analistas</span></div>
+      </div>
+
+      <div class="content">
+        <p>En muchas capitales de países ricos el mes empieza y termina en el mismo gesto: una transferencia al casero. El sueldo entra en la cuenta un jueves, el alquiler sale el viernes, los recibos de luz, agua e internet se cargan el lunes y, cuando la persona vuelve a mirar el extracto, el saldo ha regresado a una cifra mínima. Entre el cuarenta y el cincuenta por ciento del salario neto se queda en la vivienda, casi todo lo demás se disuelve en comida y transporte y lo que sobrevive, si es que sobrevive algo, se va en una suscripción, una cena puntual o un viaje barato. Así pasan los meses y, con ellos, los años, hasta que este patrón deja de percibirse como anomalía y se convierte en la forma normal de vivir la juventud.</p>
+        <section class="chart-block" aria-labelledby="rent-salary-title">
+          <div class="chart-header">
+            <h2 class="chart-title" id="rent-salary-title">Alquiler medio de un apartamento de un dormitorio vs. salario neto medio (2025)</h2>
+            <p class="chart-subtitle">Ciudades ordenadas por precio de alquiler; la longitud de cada barra se ajusta a su propia escala.</p>
+          </div>
+          <div class="chart-rows" id="rent-salary-rows"></div>
+          <button class="chart-next" id="chart-next" aria-label="Ver siguientes ciudades">➜</button>
+          <div class="chart-page-indicator" id="chart-page-indicator"></div>
+          <div class="chart-source">Fuente: Deutsche Bank Research Institute (numbeo.com &amp; Deutsche Bank)</div>
+        </section>
+        <p>Durante un tiempo, muchas personas intentan salir de esa plantilla. Comparten piso con más gente, aceptan trabajos con más horas, cambian de barrio o de ciudad, miran anuncios en zonas donde los precios parecen menos agresivos. La mudanza alivia una parte del gasto, pero el recorte suele cobrarse por otro lado, ya sea en salarios más bajos, trayectos más largos o menos oportunidades profesionales. Cuando vuelven a abrir la aplicación del banco al final del mes, la diferencia real es pequeña. El ciclo se repite tantas veces que la frase “no hay salida razonable” deja de ser dramatización y pasa a funcionar como diagnóstico íntimo.</p>
+        <p>En esa trayectoria, el reparto del salario muestra una lógica reconocible. Una franja amplia se va en el alquiler, otra franja se consume en gastos básicos como alimentación, suministros y transporte, y el resto se reparte en pequeñas satisfacciones que permiten decir “al menos tengo un techo y algún consuelo”. El esquema se sitúa en un rango muy concreto: impide el ahorro, pero todavía deja un mínimo de margen para evitar un estallido abierto. Si la renta se comiera casi todo y ni siquiera quedara para comer con cierta regularidad, el sistema entraría en zona de riesgo. Al mantenerse en este nivel intermedio, produce un equilibrio rentable para quienes cobran la renta y apenas deja espacio para que quien la paga acumule capital o trace planes de vida de largo alcance.</p>
+        <p><strong>Jóvenes que viven dentro de un margen calculado</strong></p>
+        <p>El cuerpo responde a este equilibrio con mecanismos propios. El estrés prolongado altera el modo en que el cerebro ordena prioridades. Las conexiones que sostienen proyectos largos se debilitan, mientras la atención se concentra en amenazas inmediatas. En lugar de dedicar energía a imaginar un cambio de profesión, de ciudad o de país, la mente repite una pregunta concreta: si se llegará a pagar el alquiler de este mes. <a href="http://qdgvr.github.io/">Un análisis con datos de 51 Estados de EE. UU.</a> muestra que, cuando la presión de los alquileres se sale de lo habitual, aumentan tanto los indicadores de malestar mental como los días en los que la vida diaria queda interrumpida. El estudio traduce esa tensión en una combinación de renta disponible, síntomas de estrés y jornadas en las que el trabajo, el cuidado o la sociabilidad se quedan en suspenso.</p>
+        <p>Manuel, profesor de Neurociencia en Sevilla, observa este fenómeno desde la consulta y el aula. Explica que, cuando una persona se enfrenta muchas veces a la misma situación sin que sus intentos la modifiquen, el sistema nervioso reduce la energía que invierte en buscar alternativas. Al principio se prueban caminos distintos, más adelante se acepta lo que hay. Quien encadena varias mudanzas, dos o tres cambios de trabajo y recortes sucesivos en casi todas las partidas del presupuesto sin ver un cambio real en el saldo final, empieza a descartar de manera casi automática cualquier decisión que implique riesgo.</p>
+        <section class="paycheck-block" aria-labelledby="paycheck-title">
+          <div class="paycheck-header">
+            <h3 id="paycheck-title">Quienes viven de nómina en nómina</h3>
+            <p>2025 ADP People At Work · Presión de la nómina y pluriempleo</p>
+          </div>
+          <div class="paycheck-cards">
+            <div class="paycheck-card">
+              <strong>57%</strong>
+              <div>Los trabajadores de España viven de nómina en nómina</div>
+            </div>
+            <div class="paycheck-card">
+              <strong>57%</strong>
+              <div>Los trabajadores de todo el mundo tienen dificultades para afrontar el coste de la vida</div>
+            </div>
+            <div class="paycheck-card">
+              <strong>23%</strong>
+              <div>Trabajadores en todo el mundo con dos o más empleos</div>
+            </div>
+          </div>
+          <div class="paycheck-chart">
+            <h4 class="paycheck-chart-title">Proporción que vive de nómina en nómina</h4>
+            <div id="paycheck-chart"></div>
+          </div>
+        </section>
+        <p>La economía doméstica, sobre el papel, funciona como un pequeño bucle de ajuste. Se fijan metas, se comparan cifras, se corrige rumbo cuando el margen es demasiado estrecho. Ese ir y venir alimenta la sensación de que la vida se puede dirigir, aunque sea dentro de una franja reducida. El problema aparece cuando los cambios dejan de tener efecto. Si compartir piso, mudarse a un barrio más barato o trabajar más horas apenas altera el saldo de fin de mes, el bucle deja de responder. La persona aprende que los esfuerzos significativos no modifican un sistema que otros han fijado y pasa de la transformación a la mera supervivencia.</p>
+        <p>En las grandes ciudades este desplazamiento se ve en escenas aparentemente menores. Una oferta de trabajo en otra región se rechaza porque existe miedo a no poder volver a entrar en el mercado de alquiler si el plan falla. Un máster que exige dejar de trabajar durante unos meses se descarta porque la idea de perder el piso actual resulta inasumible. Una relación de pareja se alarga en un piso compartido que ya no se quiere porque mudarse exige una inversión que excede las fuerzas. No hace falta una gran renuncia solemne; basta con una suma de decisiones que no se toman. Con el tiempo, el horizonte acaba reducido a la continuidad del contrato.</p>
+        <p><strong>La mayoría propietaria en una democracia envejecida</strong></p>
+        <p>Este paisaje no se explica solo con decisiones individuales ni con un mercado abstracto. Detrás hay una estructura de poder ligada a la edad y a la propiedad. En muchas economías avanzadas, la población de más edad concentra una parte muy grande del parque de vivienda. Una fracción considerable de la clase media mayor obtiene ingresos de los pisos que compró décadas atrás y que ahora alquila. Para muchos jubilados, esa renta completa pensiones y se presenta como recompensa a una vida de ahorro y sacrificio.</p>
+        <p>El Estado, por su parte, depende de los impuestos ligados a la propiedad inmobiliaria, desde las transmisiones hasta los tributos periódicos. La recaudación que aporta la vivienda sostiene parte de los presupuestos destinados a sanidad, educación o pensiones. En sociedades donde la natalidad se mantiene baja y la proporción de mayores aumenta, sucede algo que raras veces se formula de manera directa: en términos estrictamente electorales resulta más rentable defender la posición de quienes ya tienen vivienda y la usan como fuente de renta que la de quienes pagan alquiler y apenas llegan a fin de mes. Quienes poseen inmuebles son más numerosos, votan con mayor frecuencia y ocupan un lugar central en el imaginario de estabilidad social.</p>
+        <p>Los parlamentos reflejan este reparto. En muchos países, una parte significativa de quienes legislan es propietaria de varias viviendas. No se trata solo de dirigentes conservadores. También figuras que se presentan como defensoras de los sectores más vulnerables tienen buena parte de su patrimonio en inmuebles. En ese contexto, las leyes que mantienen o elevan el valor de la propiedad resultan beneficiosas para una mayoría propietaria y, al mismo tiempo, aseguran el patrimonio de quienes ocupan los cargos. La democracia se convierte así en una democracia envejecida en la que una mayoría propietaria, más que una mayoría salarial, fija buena parte de las reglas que gobiernan la vida de los jóvenes inquilinos.</p>
+        <div class="line-chart-block">
+          <h3 class="line-chart-title">Índice de salarios, alquileres y precios de la vivienda</h3>
+          <p class="line-chart-subtitle">2012 = 100. Salarios frente al precio de la vivienda y frente al alquiler.</p>
+          <div class="line-chart-legend">
+            <span><span class="line-legend-chip" style="background:#a86ad5"></span>Salarios</span>
+            <span><span class="line-legend-chip" style="background:#30c0c0"></span>Precio de la vivienda</span>
+            <span><span class="line-legend-chip" style="background:#e6b23f"></span>Alquiler</span>
+          </div>
+          <div id="wage-rent-chart"></div>
+          <div class="chart-source">Fuente: CSO, HPA05, EHQ08, The RTB Rent Index Q4 2022.</div>
+        </div>
+        <p>En los barrios esta dinámica adopta rostros distintos. Junto a los grandes fondos que gestionan miles de pisos, aparecen jubilados que completan su pensión alquilando uno o dos apartamentos. La mensualidad que cobran no es una abstracción, sino un elemento decisivo de su estabilidad material y de la imagen que tienen de sí mismos como personas previsores que hicieron “lo que había que hacer” cuando los precios permitían comprar. Cualquier política que ponga en riesgo esa fuente de ingresos se vive como una amenaza directa, no como un ajuste colectivo. Los grandes propietarios disponen, además, de capital para soportar meses con viviendas vacías, ajustar la oferta a su conveniencia y resistir una guerra de desgaste. Quien llega con un sueldo ajustado y sin ahorros significativos tiene menos margen para negociar, aguanta peor los periodos de incertidumbre y firma contratos en un terreno donde casi todas las cartas importantes están en manos ajenas.</p>
+        <p><strong>Reformas simbólicas y nuevas formas de impotencia</strong></p>
+        <p>Las medidas que se anuncian como protección de los inquilinos se mueven, con frecuencia, dentro de estos límites. Se presentan topes al alquiler, se aprueban regulaciones que prometen poner freno a las subidas o se anuncian programas de vivienda asequible. En muchos casos, sin embargo, las normas llegan acompañadas de lagunas y excepciones que permiten mantener casi intacta la estructura principal. En determinadas ciudades, sistemas estrictos de control del precio han convivido con listas de espera interminables y con mercados paralelos donde conseguir un piso depende de entrevistas con propietarios que deciden, de manera discrecional, a quién alquilan y a quién dejan fuera.</p>
+        <p>A corto plazo, estas políticas producen sensación de victoria. Parecen confirmar que el problema ha entrado por fin en la agenda y que alguien ha movido ficha. A largo plazo, cuando la vida cotidiana cambia poco, refuerzan otra impresión: la de que nada esencial se mueve. El ciclo se repite, promesa, pequeña mejora aparente, regreso al punto de partida. Con los años, este vaivén construye una forma de impotencia que ya no es solo individual, sino colectiva. No solo se aprende que un esfuerzo personal no cambia el saldo bancario; también se aprende que una ley nueva raras veces altera el esquema de fondo.</p>
+        <p><strong>Tres brechas y una vida organizada alrededor de la renta</strong></p>
+        <p>Al mirar el conjunto aparecen tres brechas que sostienen la situación. La brecha de información se abre entre quienes alquilan y quienes gestionan grandes carteras de vivienda. Las empresas y los propietarios con muchos inmuebles conocen al detalle precios, vacantes y patrones de demanda; los inquilinos solo ven anuncios dispersos y el resultado de sus propias búsquedas. La brecha de capital separa a quien lucha por ahorrar unos cientos de euros al mes de los actores capaces de soportar largos periodos de vacantes o litigios sin perder pie. La brecha de poder político y demográfico sitúa en un lado a millones de personas mayores y propietarias, aliadas de facto con quienes gobiernan, y en el otro a una población de arrendatarios jóvenes menos numerosa, más dispersa y peor organizada.</p>
+        <p>Mientras estas brechas se mantengan, las reformas tenderán a ser parciales y reversibles. Alguien conseguirá una rebaja en su edificio, una ciudad aprobará un programa de vivienda pública, un país introducirá una regulación nueva con vocación de límite. Si el resto de la estructura permanece igual, estas piezas funcionarán más como excepciones que como cambios de fondo.</p>
+        <p>La consecuencia se percibe en la forma concreta de vivir la juventud en estas sociedades. Personas que estudian, trabajan y encadenan contratos dedican gran parte de su energía a sostener un alquiler que nunca conduce a la propiedad, a unos ingresos que no permiten acumular un colchón, a una vida donde los planes a largo plazo siempre parecen prematuros. No basta con decir que los sueldos son bajos o que se consumen demasiados caprichos; la cuestión central es que habitan un sistema diseñado para que la vivienda actúe como principal mecanismo de extracción en una democracia donde la mayoría efectiva ya no es la de quienes viven del salario, sino la de quienes viven, en gran medida, de las rentas.</p>
+        <p>Al final, la vida de millones de personas queda organizada alrededor de una transferencia bancaria que se repite cada mes. El futuro no desaparece, pero se mantiene a una distancia constante, como si alguien lo sujetara desde el otro lado de la línea. La pregunta que queda en el aire no se limita a cuánto cuesta un piso, sino a quién decide ese precio y con qué objetivo lo mantiene en ese rango exacto en el que se sobrevive sin llegar a gobernar, de verdad, la propia vida.</p>
+      </div>
+    </article>
+    <section class="article-tail">
+      <div class="tag-row">
+        <a class="pill-btn" href="#">Explorar más</a>
+        <a class="pill-btn" href="#">Opinión</a>
+        <a class="pill-btn" href="#">Columnas</a>
+        <a class="pill-btn" href="#">Noticia</a>
+        <a class="pill-btn" href="#">Sociedad</a>
+        <a class="pill-btn" href="#">Economía</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-thumb">Edición</div>
+        <div class="edition-meta">
+          <h4>De la edición del 6 de diciembre de 2025</h4>
+          <p>Descubra historias de esta sección y más en el índice de contenidos.</p>
+          <a class="pill-btn" href="#">Explorar la edición</a>
+        </div>
+      </div>
+
+      <div class="share-row">
+        <button class="share-btn">Guardar</button>
+        <button class="share-btn">Compartir</button>
+        <button class="share-btn">Reutilizar este contenido</button>
+      </div>
+
+      <div class="newsletter-box">
+        <h4>Suscríbase a nuestro boletín</h4>
+        <p>Su guía para las agonías de la vida de oficina.</p>
+        <button>Suscribirse</button>
+      </div>
+
+      <div class="more-grid">
+        <div class="more-title">Más en Economía</div>
+        <div class="more-items">
+          <div class="more-card">
+            <h5>¿Destruirá la ola de megafusiones valor para los accionistas?</h5>
+            <p>Es una moneda al aire.</p>
+          </div>
+          <div class="more-card">
+            <h5>Para frenar su declive, Volkswagen y otros miran hacia China</h5>
+            <p>Los fabricantes de automóviles extranjeros están localizando sus operaciones.</p>
+          </div>
+          <div class="more-card">
+            <h5>Patrick Drahi ha vuelto a imponerse a sus acreedores</h5>
+            <p>La reestructuración de deuda más caótica del mundo acaba de ponerse aún más fea.</p>
+          </div>
+          <div class="more-card">
+            <h5>Hasta los fabricantes europeos de bolígrafos están en peligro</h5>
+            <p>Pero una peculiar marca italiana está prosperando.</p>
+          </div>
+          <div class="more-card">
+            <h5>De los microdramas a los videojuegos, el entretenimiento chino vive un auge</h5>
+            <p>¿Cuánta libertad dará el Partido Comunista a los creadores?</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>Cibercultura</h4>
+        <a href="#">Acerca de</a>
+        <a href="#">Reutilizar nuestro contenido</a>
+        <a href="#">Suscripción</a>
+        <a href="#">Cibercultura Pro</a>
+        <a href="#">SecureDrop</a>
+      </div>
+      <div class="footer-col">
+        <h4>Cibercultura Group</h4>
+        <a href="#">Cibercultura Insights</a>
+        <a href="#">Cibercultura Impact</a>
+        <a href="#">Cibercultura Impact Events</a>
+        <a href="#">Education Courses</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <a href="#">Ayuda y asistencia</a>
+        <a href="#">Publicidad</a>
+        <a href="#">Centro de prensa</a>
+        <a href="#">Programa de afiliados</a>
+      </div>
+      <div class="footer-col">
+        <h4>Empleo</h4>
+        <a href="#">Trabajar aquí</a>
+        <a href="#">Puestos ejecutivos</a>
+      </div>
+    </div>
+    <div class="footer-meta">© Cibercultura 2025 · Términos · Privacidad · Cookies</div>
+  </footer>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const rows = document.getElementById("rent-salary-rows");
+      const nextBtn = document.getElementById("chart-next");
+      const indicator = document.getElementById("chart-page-indicator");
+      if (!rows) return;
+
+      const data = [
+        { city: "New York", rent: 3792, salary: 4693 },
+        { city: "London", rent: 2732, salary: 3637 },
+        { city: "Zurich", rent: 2489, salary: 7127 },
+        { city: "Los Angeles", rent: 2391, salary: 4062 },
+        { city: "Dubai", rent: 2197, salary: 3719 },
+        { city: "Dublin", rent: 2176, salary: 3507 },
+        { city: "Amsterdam", rent: 2158, salary: 4352 },
+        { city: "Geneva", rent: 2132, salary: 7307 },
+        { city: "Sydney", rent: 1980, salary: 3944 },
+        { city: "Luxembourg", rent: 1909, salary: 5634 },
+        { city: "Copenhagen", rent: 1850, salary: 4270 },
+        { city: "Toronto", rent: 1654, salary: 2936 },
+        { city: "Munich", rent: 1610, salary: 3574 },
+        { city: "Oslo", rent: 1546, salary: 3685 },
+        { city: "Edinburgh", rent: 1495, salary: 3419 },
+        { city: "Paris", rent: 1492, salary: 3322 },
+        { city: "Madrid", rent: 1491, salary: 2007 },
+        { city: "Lisbon", rent: 1481, salary: 1278 },
+        { city: "Milan", rent: 1466, salary: 2052 },
+        { city: "Stockholm", rent: 1455, salary: 3162 },
+        { city: "Barcelona", rent: 1416, salary: 1905 },
+        { city: "Frankfurt", rent: 1403, salary: 4129 },
+        { city: "Melbourne", rent: 1398, salary: 3782 },
+        { city: "Berlin", rent: 1300, salary: 3263 },
+        { city: "Birmingham", rent: 1224, salary: 2795 },
+        { city: "Rome", rent: 1214, salary: 1872 },
+        { city: "Brussels", rent: 1192, salary: 2994 },
+        { city: "Moscow", rent: 1182, salary: 1510 },
+        { city: "Vienna", rent: 1152, salary: 3105 },
+        { city: "Helsinki", rent: 1102, salary: 3123 },
+        { city: "Warsaw", rent: 1044, salary: 1859 },
+        { city: "Prague", rent: 1042, salary: 1934 },
+        { city: "Tokyo", rent: 1023, salary: 2372 },
+        { city: "Mexico City", rent: 917, salary: 780 },
+        { city: "Seoul", rent: 887, salary: 3000 },
+        { city: "Shanghai", rent: 870, salary: 1375 },
+        { city: "Istanbul", rent: 868, salary: 855 },
+        { city: "Cape Town", rent: 694, salary: 1399 },
+        { city: "Budapest", rent: 665, salary: 1289 },
+        { city: "Mumbai", rent: 642, salary: 766 },
+        { city: "Sao Paulo", rent: 611, salary: 602 },
+        { city: "Athens", rent: 595, salary: 1044 },
+        { city: "Buenos Aires", rent: 593, salary: 671 },
+        { city: "Bogota", rent: 413, salary: 343 },
+        { city: "Bangalore", rent: 279, salary: 1154 },
+        { city: "Cairo", rent: 189, salary: 151 }
+      ];
+
+      const maxRent = Math.max(...data.map(d => d.rent));
+      const maxSalary = Math.max(...data.map(d => d.salary));
+      const formatter = new Intl.NumberFormat("es-ES");
+      const pageSize = 10;
+      const pageCount = Math.ceil(data.length / pageSize);
+      let pageIndex = 0;
+
+      const addRow = (cells, extraClass = "") => {
+        const row = document.createElement("div");
+        row.className = `chart-row ${extraClass}`.trim();
+        cells.forEach(cell => row.appendChild(cell));
+        rows.appendChild(row);
+      };
+
+      const makeLabel = text => {
+        const div = document.createElement("div");
+        div.className = "chart-label";
+        div.textContent = text;
+        return div;
+      };
+
+      const makeBarCell = (item, type, maxVal) => {
+        const cell = document.createElement("div");
+        cell.className = "chart-bar-cell";
+
+        const bar = document.createElement("div");
+        bar.className = "bar";
+
+        const fill = document.createElement("div");
+        fill.className = `bar-fill ${type}`;
+        const width = Math.max((item[type] / maxVal) * 100, 4);
+        fill.style.width = `${width}%`;
+        fill.textContent = formatter.format(item[type]);
+
+        bar.appendChild(fill);
+        cell.appendChild(bar);
+        return cell;
+      };
+
+      const renderPage = (idx) => {
+        rows.innerHTML = "";
+        addRow(
+          [makeLabel("Ciudades"), makeLabel("Alquiler (EUR)"), makeLabel("Salario (EUR)")],
+          "chart-headings"
+        );
+
+        const start = idx * pageSize;
+        const slice = data.slice(start, start + pageSize);
+
+        slice.forEach(item => {
+          addRow([
+            makeLabel(item.city),
+            makeBarCell(item, "rent", maxRent),
+            makeBarCell(item, "salary", maxSalary)
+          ]);
+        });
+
+        if (indicator) indicator.textContent = `${idx + 1} / ${pageCount}`;
+      };
+
+      renderPage(pageIndex);
+
+      if (nextBtn) {
+        if (pageCount <= 1) nextBtn.style.display = "none";
+        nextBtn.addEventListener("click", () => {
+          pageIndex = (pageIndex + 1) % pageCount;
+          renderPage(pageIndex);
+        });
+      }
+    });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const chart = document.getElementById("paycheck-chart");
+      if (!chart) return;
+
+      const data = [
+        { country: "UK", value: 49 },
+        { country: "France", value: 43 },
+        { country: "Netherlands", value: 42 },
+        { country: "Spain", value: 57, highlight: true },
+        { country: "Germany", value: 51 },
+        { country: "Switzerland", value: 59 }
+      ];
+
+      const maxVal = Math.max(...data.map(d => d.value), 60);
+
+      data.forEach(d => {
+        const row = document.createElement("div");
+        row.className = "paycheck-bar-row";
+
+        const label = document.createElement("div");
+        label.textContent = d.country;
+        row.appendChild(label);
+
+        const bar = document.createElement("div");
+        bar.className = "paycheck-bar";
+
+        const fill = document.createElement("div");
+        fill.className = "paycheck-fill" + (d.highlight ? " highlight" : "");
+        fill.style.width = `${(d.value / maxVal) * 100}%`;
+        fill.textContent = "";
+        bar.appendChild(fill);
+        row.appendChild(bar);
+
+        const val = document.createElement("div");
+        val.className = "paycheck-value";
+        val.textContent = d.value + "%";
+        row.appendChild(val);
+
+        chart.appendChild(row);
+      });
+    });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const years = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
+      const wages =   [100, 100, 100, 101, 103, 105, 108, 112, 118, 124, 128];
+      const property = [100, 103, 105, 111, 122, 133, 143, 146, 148, 160, 177];
+      const rent =    [100, 105, 113, 120, 130, 144, 154, 164, 168, 180, 193];
+
+      const series = [
+        { name: "Salarios", color: "#a86ad5", values: wages },
+        { name: "Precio de la vivienda", color: "#30c0c0", values: property },
+        { name: "Alquiler", color: "#e6b23f", values: rent }
+      ];
+
+      const container = d3.select("#wage-rent-chart");
+      if (!container.node()) return;
+
+      const margin = { top: 18, right: 22, bottom: 32, left: 46 };
+      const width = 880;
+      const height = 320;
+      const innerWidth = width - margin.left - margin.right;
+      const innerHeight = height - margin.top - margin.bottom;
+
+      const svg = container.append("svg")
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .style("width", "100%")
+        .style("height", "auto");
+
+      const g = svg.append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+      const x = d3.scalePoint()
+        .domain(years)
+        .range([0, innerWidth])
+        .padding(0.5);
+
+      const allValues = series.flatMap(s => s.values);
+      const y = d3.scaleLinear()
+        .domain([100, d3.max(allValues) * 1.05])
+        .range([innerHeight, 0]);
+
+      const yTicks = y.ticks(6).filter(t => t >= 100);
+
+      g.append("g")
+        .attr("stroke", "#2f2f2f")
+        .attr("stroke-opacity", 1)
+        .call(grid => grid.selectAll("line")
+          .data(yTicks)
+          .join("line")
+          .attr("x1", 0)
+          .attr("x2", innerWidth)
+          .attr("y1", d => y(d))
+          .attr("y2", d => y(d)));
+
+      g.append("g")
+        .attr("transform", `translate(0,${innerHeight})`)
+        .call(d3.axisBottom(x).tickFormat(d3.format("d")).tickSizeOuter(0))
+        .call(axis => axis.selectAll("text").attr("font-size", 11).attr("fill", "#cfcfcf"))
+        .call(axis => axis.selectAll("path,line").attr("stroke", "#3a3a3a"));
+
+      g.append("g")
+        .call(d3.axisLeft(y).tickValues(yTicks).tickFormat(d => d.toFixed(0)).tickSizeOuter(0))
+        .call(axis => axis.selectAll("text").attr("font-size", 11).attr("fill", "#cfcfcf"))
+        .call(axis => axis.selectAll("path,line").attr("stroke", "#3a3a3a"));
+
+      const lineGen = d3.line()
+        .x((d, i) => x(years[i]))
+        .y(d => y(d))
+        .curve(d3.curveMonotoneX);
+
+      series.forEach(s => {
+        g.append("path")
+          .datum(s.values)
+          .attr("fill", "none")
+          .attr("stroke", s.color)
+          .attr("stroke-width", 3)
+          .attr("d", lineGen);
+      });
+    });
+  </script>
+</body>
+</html>
