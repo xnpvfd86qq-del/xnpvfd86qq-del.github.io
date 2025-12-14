@@ -523,6 +523,21 @@
       text-align: right;
       font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
     }
+    .embed-block {
+      margin: 18px 0 24px;
+      border-radius: 12px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+      overflow: hidden;
+    }
+    .embed-frame {
+      width: 100%;
+      min-height: 520px;
+      border: 0;
+      display: block;
+      background: var(--panel-dark);
+    }
     .paycheck-block {
       margin: 12px 0 14px;
       padding: 10px;
@@ -699,6 +714,34 @@
       cursor: pointer;
     }
     .save-share button:hover { background: #202020; }
+    .summary-audio {
+      margin: 6px 0 24px;
+      padding: 12px;
+      border-radius: 10px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .summary-audio[hidden] { display: none; }
+    .summary-audio audio {
+      width: 100%;
+      max-width: 520px;
+      background: #0f0f0f;
+      border-radius: 8px;
+    }
+    .audio-close {
+      border: 1px solid var(--border);
+      background: #1a1a1a;
+      color: #e0e0e0;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .audio-close:hover { background: #202020; }
     .site-footer {
       background: #161616;
       color: #d8d8d8;
@@ -826,6 +869,14 @@
       <div class="save-share">
         <button aria-label="Guardar">Guardar</button>
         <button aria-label="Compartir">Compartir</button>
+        <button aria-label="Resumen">Resumen</button>
+      </div>
+      <div class="summary-audio" id="summary-audio-qdgvr" hidden>
+        <audio id="summary-audio-element-qdgvr" controls preload="auto">
+          <source src="1.m4a" type="audio/mp4">
+          Tu navegador no soporta el elemento de audio.
+        </audio>
+        <button class="audio-close" id="summary-audio-close-qdgvr" aria-label="Cerrar resumen">Cerrar</button>
       </div>
       <div class="hero">
         <img src="illustration.png" alt="Illustration of robotic hands exchanging money and a key with a young person at a table" />
@@ -839,7 +890,7 @@
       </div>
 
       <div class="content">
-        <p>En muchas capitales de países ricos el mes empieza y termina en el mismo gesto: una transferencia al casero. El sueldo entra en la cuenta un jueves, el alquiler sale el viernes, los recibos de luz, agua e internet se cargan el lunes y, cuando la persona vuelve a mirar el extracto, el saldo ha regresado a una cifra mínima. Entre el cuarenta y el cincuenta por ciento del salario neto se queda en la vivienda, casi todo lo demás se disuelve en comida y transporte y lo que sobrevive, si es que sobrevive algo, se va en una suscripción, una cena puntual o un viaje barato. Así pasan los meses y, con ellos, los años, hasta que este patrón deja de percibirse como anomalía y se convierte en la forma normal de vivir la juventud.</p>
+        <p>En muchas capitales de países contemporanéos el mes empieza y termina en el mismo gesto: una transferencia al casero. El sueldo entra en la cuenta un jueves, el alquiler sale el viernes, los recibos de luz, agua e internet se cargan el lunes y, cuando la persona vuelve a mirar el extracto, el saldo ha regresado a una cifra mínima. Entre el cuarenta y el cincuenta por ciento del salario neto se queda en la vivienda, casi todo lo demás se disuelve en comida y transporte y lo que sobrevive, si es que sobrevive algo, se va en una suscripción, una cena puntual o un viaje barato. Así pasan los meses y, con ellos, los años, hasta que este patrón deja de percibirse como anomalía y se convierte en la forma normal de vivir la juventud.</p>
         <section class="chart-block" aria-labelledby="rent-salary-title">
           <div class="chart-header">
             <h2 class="chart-title" id="rent-salary-title">Alquiler medio de un apartamento de un dormitorio vs. salario neto medio (2025)</h2>
@@ -851,9 +902,12 @@
           <div class="chart-source">Fuente: Deutsche Bank Research Institute (numbeo.com &amp; Deutsche Bank)</div>
         </section>
         <p>Durante un tiempo, muchas personas intentan salir de esa plantilla. Comparten piso con más gente, aceptan trabajos con más horas, cambian de barrio o de ciudad, miran anuncios en zonas donde los precios parecen menos agresivos. La mudanza alivia una parte del gasto, pero el recorte suele cobrarse por otro lado, ya sea en salarios más bajos, trayectos más largos o menos oportunidades profesionales. Cuando vuelven a abrir la aplicación del banco al final del mes, la diferencia real es pequeña. El ciclo se repite tantas veces que la frase “no hay salida razonable” deja de ser dramatización y pasa a funcionar como diagnóstico íntimo.</p>
+        <section class="embed-block" aria-label="Distribución del salario mensual">
+          <iframe class="embed-frame" id="datawrapper-chart-aHZWZ" title="Distribución del salario mensual" src="https://interactive.guim.co.uk/datawrapper/embed/aHZWZ/2/?dark=true&dark=true" scrolling="no" loading="lazy" aria-label="Chart"></iframe>
+        </section>
         <p>En esa trayectoria, el reparto del salario muestra una lógica reconocible. Una franja amplia se va en el alquiler, otra franja se consume en gastos básicos como alimentación, suministros y transporte, y el resto se reparte en pequeñas satisfacciones que permiten decir “al menos tengo un techo y algún consuelo”. El esquema se sitúa en un rango muy concreto: impide el ahorro, pero todavía deja un mínimo de margen para evitar un estallido abierto. Si la renta se comiera casi todo y ni siquiera quedara para comer con cierta regularidad, el sistema entraría en zona de riesgo. Al mantenerse en este nivel intermedio, produce un equilibrio rentable para quienes cobran la renta y apenas deja espacio para que quien la paga acumule capital o trace planes de vida de largo alcance.</p>
         <p><strong>Jóvenes que viven dentro de un margen calculado</strong></p>
-        <p>El cuerpo responde a este equilibrio con mecanismos propios. El estrés prolongado altera el modo en que el cerebro ordena prioridades. Las conexiones que sostienen proyectos largos se debilitan, mientras la atención se concentra en amenazas inmediatas. En lugar de dedicar energía a imaginar un cambio de profesión, de ciudad o de país, la mente repite una pregunta concreta: si se llegará a pagar el alquiler de este mes. <a href="http://qdgvr.github.io/">Un análisis con datos de 51 Estados de EE. UU.</a> muestra que, cuando la presión de los alquileres se sale de lo habitual, aumentan tanto los indicadores de malestar mental como los días en los que la vida diaria queda interrumpida. El estudio traduce esa tensión en una combinación de renta disponible, síntomas de estrés y jornadas en las que el trabajo, el cuidado o la sociabilidad se quedan en suspenso.</p>
+        <p>El cuerpo responde a este equilibrio con mecanismos propios. El estrés prolongado altera el modo en que el cerebro ordena prioridades. Las conexiones que sostienen proyectos largos se debilitan, mientras la atención se concentra en amenazas inmediatas. En lugar de dedicar energía a imaginar un cambio de profesión, de ciudad o de país, la mente repite una pregunta concreta: si se llegará a pagar el alquiler de este mes. <a href="http://qdgvr.github.io/">Un análisis con datos de EE. UU.</a> muestra que, cuando la presión de los alquileres se sale de lo habitual, aumentan tanto los indicadores de malestar mental como los días en los que la vida diaria queda interrumpida. El estudio traduce esa tensión en una combinación de renta disponible, síntomas de estrés y jornadas en las que el trabajo, el cuidado o la sociabilidad se quedan en suspenso.</p>
         <p>Manuel, profesor de Neurociencia en Sevilla, observa este fenómeno desde la consulta y el aula. Explica que, cuando una persona se enfrenta muchas veces a la misma situación sin que sus intentos la modifiquen, el sistema nervioso reduce la energía que invierte en buscar alternativas. Al principio se prueban caminos distintos, más adelante se acepta lo que hay. Quien encadena varias mudanzas, dos o tres cambios de trabajo y recortes sucesivos en casi todas las partidas del presupuesto sin ver un cambio real en el saldo final, empieza a descartar de manera casi automática cualquier decisión que implique riesgo.</p>
         <section class="paycheck-block" aria-labelledby="paycheck-title">
           <div class="paycheck-header">
@@ -884,7 +938,7 @@
         <p><strong>La mayoría propietaria en una democracia envejecida</strong></p>
         <p>Este paisaje no se explica solo con decisiones individuales ni con un mercado abstracto. Detrás hay una estructura de poder ligada a la edad y a la propiedad. En muchas economías avanzadas, la población de más edad concentra una parte muy grande del parque de vivienda. Una fracción considerable de la clase media mayor obtiene ingresos de los pisos que compró décadas atrás y que ahora alquila. Para muchos jubilados, esa renta completa pensiones y se presenta como recompensa a una vida de ahorro y sacrificio.</p>
         <p>El Estado, por su parte, depende de los impuestos ligados a la propiedad inmobiliaria, desde las transmisiones hasta los tributos periódicos. La recaudación que aporta la vivienda sostiene parte de los presupuestos destinados a sanidad, educación o pensiones. En sociedades donde la natalidad se mantiene baja y la proporción de mayores aumenta, sucede algo que raras veces se formula de manera directa: en términos estrictamente electorales resulta más rentable defender la posición de quienes ya tienen vivienda y la usan como fuente de renta que la de quienes pagan alquiler y apenas llegan a fin de mes. Quienes poseen inmuebles son más numerosos, votan con mayor frecuencia y ocupan un lugar central en el imaginario de estabilidad social.</p>
-        <p>Los parlamentos reflejan este reparto. En muchos países, una parte significativa de quienes legislan es propietaria de varias viviendas. No se trata solo de dirigentes conservadores. También figuras que se presentan como defensoras de los sectores más vulnerables tienen buena parte de su patrimonio en inmuebles. En ese contexto, las leyes que mantienen o elevan el valor de la propiedad resultan beneficiosas para una mayoría propietaria y, al mismo tiempo, aseguran el patrimonio de quienes ocupan los cargos. La democracia se convierte así en una democracia envejecida en la que una mayoría propietaria, más que una mayoría salarial, fija buena parte de las reglas que gobiernan la vida de los jóvenes inquilinos.</p>
+        <p>Los parlamentos reflejan este reparto. En muchos países, una parte significativa de quienes legislan es <a href="https://www.afr.com/politics/federal/politicians-among-australia-s-most-prolific-landlords-20241016-p5kipw">propietaria de varias viviendas</a>. No se trata solo de dirigentes conservadores. <a href="https://www.readthemaple.com/80-of-canadas-federal-party-leaders-invested-in-real-estate/">También figuras</a> que se presentan como defensoras de los sectores más vulnerables tienen buena parte de su patrimonio en inmuebles. En ese contexto, las leyes que mantienen o elevan el valor de la propiedad resultan beneficiosas para una mayoría propietaria y, al mismo tiempo, aseguran el patrimonio de quienes ocupan los cargos. La democracia se convierte así en una democracia envejecida en la que una mayoría propietaria, más que una mayoría salarial, fija buena parte de las reglas que gobiernan la vida de los jóvenes inquilinos.</p>
         <div class="line-chart-block">
           <h3 class="line-chart-title">Índice de salarios, alquileres y precios de la vivienda</h3>
           <p class="line-chart-subtitle">2012 = 100. Salarios frente al precio de la vivienda y frente al alquiler.</p>
@@ -898,7 +952,7 @@
         </div>
         <p>En los barrios esta dinámica adopta rostros distintos. Junto a los grandes fondos que gestionan miles de pisos, aparecen jubilados que completan su pensión alquilando uno o dos apartamentos. La mensualidad que cobran no es una abstracción, sino un elemento decisivo de su estabilidad material y de la imagen que tienen de sí mismos como personas previsores que hicieron “lo que había que hacer” cuando los precios permitían comprar. Cualquier política que ponga en riesgo esa fuente de ingresos se vive como una amenaza directa, no como un ajuste colectivo. Los grandes propietarios disponen, además, de capital para soportar meses con viviendas vacías, ajustar la oferta a su conveniencia y resistir una guerra de desgaste. Quien llega con un sueldo ajustado y sin ahorros significativos tiene menos margen para negociar, aguanta peor los periodos de incertidumbre y firma contratos en un terreno donde casi todas las cartas importantes están en manos ajenas.</p>
         <p><strong>Reformas simbólicas y nuevas formas de impotencia</strong></p>
-        <p>Las medidas que se anuncian como protección de los inquilinos se mueven, con frecuencia, dentro de estos límites. Se presentan topes al alquiler, se aprueban regulaciones que prometen poner freno a las subidas o se anuncian programas de vivienda asequible. En muchos casos, sin embargo, las normas llegan acompañadas de lagunas y excepciones que permiten mantener casi intacta la estructura principal. En determinadas ciudades, sistemas estrictos de control del precio han convivido con listas de espera interminables y con mercados paralelos donde conseguir un piso depende de entrevistas con propietarios que deciden, de manera discrecional, a quién alquilan y a quién dejan fuera.</p>
+        <p>Las medidas que se anuncian como protección de los inquilinos se mueven, con frecuencia, dentro de estos límites. Se presentan topes al alquiler, se aprueban regulaciones que prometen poner freno a las subidas o se anuncian programas de vivienda asequible. En muchos casos, sin embargo, las normas llegan acompañadas de lagunas y excepciones que permiten mantener casi intacta la estructura principal. En determinadas ciudades, sistemas estrictos de control del precio han convivido con <a href="https://www.thelocal.se/20250513/average-wait-time-for-stockholm-first-hand-rentals-over-28-years-long">listas de espera interminables</a> y con mercados paralelos donde conseguir un piso depende de entrevistas con propietarios que deciden, de manera discrecional, a quién alquilan y a quién dejan fuera.</p>
         <p>A corto plazo, estas políticas producen sensación de victoria. Parecen confirmar que el problema ha entrado por fin en la agenda y que alguien ha movido ficha. A largo plazo, cuando la vida cotidiana cambia poco, refuerzan otra impresión: la de que nada esencial se mueve. El ciclo se repite, promesa, pequeña mejora aparente, regreso al punto de partida. Con los años, este vaivén construye una forma de impotencia que ya no es solo individual, sino colectiva. No solo se aprende que un esfuerzo personal no cambia el saldo bancario; también se aprende que una ley nueva raras veces altera el esquema de fondo.</p>
         <p><strong>Tres brechas y una vida organizada alrededor de la renta</strong></p>
         <p>Al mirar el conjunto aparecen tres brechas que sostienen la situación. La brecha de información se abre entre quienes alquilan y quienes gestionan grandes carteras de vivienda. Las empresas y los propietarios con muchos inmuebles conocen al detalle precios, vacantes y patrones de demanda; los inquilinos solo ven anuncios dispersos y el resultado de sus propias búsquedas. La brecha de capital separa a quien lucha por ahorrar unos cientos de euros al mes de los actores capaces de soportar largos periodos de vacantes o litigios sin perder pie. La brecha de poder político y demográfico sitúa en un lado a millones de personas mayores y propietarias, aliadas de facto con quienes gobiernan, y en el otro a una población de arrendatarios jóvenes menos numerosa, más dispersa y peor organizada.</p>
@@ -998,6 +1052,37 @@
     </div>
     <div class="footer-meta">© Cibercultura 2025 · Términos · Privacidad · Cookies</div>
   </footer>
+  <script>
+    (function() {
+      const trigger = document.querySelector('.save-share button[aria-label="Resumen"]');
+      const bar = document.getElementById('summary-audio-qdgvr');
+      const closeBtn = document.getElementById('summary-audio-close-qdgvr');
+      const audioEl = document.getElementById('summary-audio-element-qdgvr');
+      if (!trigger || !bar || !closeBtn || !audioEl) return;
+
+      trigger.addEventListener('click', () => {
+        bar.hidden = false;
+        audioEl.focus();
+      });
+
+      closeBtn.addEventListener('click', () => {
+        audioEl.pause();
+        bar.hidden = true;
+      });
+    })();
+  </script>
+  <script>
+    window.addEventListener("message", function(event) {
+      if (typeof event.data["datawrapper-height"] !== "undefined") {
+        for (const key in event.data["datawrapper-height"]) {
+          const iframe = document.getElementById("datawrapper-chart-" + key) || document.querySelector("iframe[src*='" + key + "']");
+          if (iframe) {
+            iframe.style.height = event.data["datawrapper-height"][key] + "px";
+          }
+        }
+      }
+    });
+  </script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const rows = document.getElementById("rent-salary-rows");
